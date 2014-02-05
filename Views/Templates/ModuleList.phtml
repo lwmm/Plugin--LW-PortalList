@@ -1,0 +1,44 @@
+<a href="<?php echo \LwPortalList\Services\Page::getUrl(array("cmd" => "showList")); ?>">zur Protal &Uuml;bersicht</a>
+<h1>Installierte Module</h1>    
+
+<h3>Plugins</h3>
+
+<?php if (count($this->collection) > 0): ?>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($this->collection["plugins"] as $plugin): ?>
+                <tr>
+                    <td><a href="<?php echo \LwPortalList\Services\Page::getUrl(array("cmd" => "showModuleDetail", "id" => $plugin->getId())); ?>"><?php echo $plugin->getValueByKey("name"); ?></a></td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php else: ?>
+    <p>keine Plugins vorhanden</p>
+<?php endif; ?>
+    
+<h3>Packages</h3>
+
+<?php if (count($this->collection) > 0): ?>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($this->collection["packages"] as $package): ?>
+                <tr>
+                    <td><a href="<?php echo \LwPortalList\Services\Page::getUrl(array("cmd" => "showModuleDetail", "id" => $package->getId())); ?>"><?php echo $package->getValueByKey("name"); ?></a></td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php else: ?>
+    <p>keine Packages vorhanden</p>
+<?php endif; ?>

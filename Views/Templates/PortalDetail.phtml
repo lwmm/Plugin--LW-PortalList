@@ -1,0 +1,114 @@
+<a href="<?php echo \LwPortalList\Services\Page::getUrl(array("cmd" => "showList")); ?>">zur&uuml;ck</a> &nbsp;&nbsp;
+<?php if ($this->isAdmin): ?>
+    <a href="<?php echo \LwPortalList\Services\Page::getUrl(array("cmd" => "showMd5CheckForm", "id" => $this->entity->getId())); ?>">Md5 Check</a> &nbsp;&nbsp;
+    <a href="<?php echo \LwPortalList\Services\Page::getUrl(array("cmd" => "getSystemInfoFromPortal", "id" => $this->entity->getId())); ?>">Systeminformationen aktualisieren</a>
+<?php endif; ?>
+
+<h1><?php echo $this->entity->getValueByKey("name"); ?></h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>&nbsp;</th>
+            <th>&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Name</td>
+            <td><?php echo $this->entity->getValueByKey("name"); ?></td>
+        </tr>
+        <tr>
+            <td>Server</td>
+            <td><?php echo $this->entity->getValueByKey("server"); ?></td>
+        </tr>
+        <tr>
+            <td>Pfad</td>
+            <td><?php echo $this->entity->getValueByKey("path"); ?></td>
+        </tr>
+        <tr>
+            <td>Url</td>
+            <td><a href="<?php echo $this->entity->getValueByKey("url"); ?>" target="_blank"><?php echo $this->entity->getValueByKey("url"); ?></a></td>
+        </tr>
+        <tr>
+            <td>Piwik Id</td>
+            <td><?php echo $this->entity->getValueByKey("piwik_id"); ?> ( <?php echo $this->entity->getValueByKey("piwik_name") ?> ) 
+                <?php if ($this->isAdmin): ?>
+                    <?php $piwik_usage = $this->entity->getValueByKey("piwik_usage"); if (count($piwik_usage) > 0) : echo "Diese Piwik-Id wird ebenfalls bei folgenden Portalen verwendet: "; foreach($piwik_usage as $use):?><a href="<?php echo \LwPortalList\Services\Page::getUrl(array("cmd" => "showEditForm", "id" => $use["id"])); ?>"><?php echo $use["name"]; ?></a>&nbsp;<?php endforeach; ?><?php endif;?>
+                <?php else: ?>
+                    <?php $piwik_usage = $this->entity->getValueByKey("piwik_usage"); if (count($piwik_usage) > 0) : echo "Diese Piwik-Id wird ebenfalls bei folgenden Portalen verwendet: "; foreach($piwik_usage as $use):?><b><?php echo $use["name"]; ?></b>&nbsp;<?php endforeach; ?><?php endif;?>
+                <?php endif; ?>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<?php if($this->entity->getValueByKey("piwik_id") > 0) :?>
+<h2>Seitenbesuche der letzten 30 Tage</h2>
+    <img src="<?php echo $this->piwikVisitChart; ?>">
+<?php endif; ?>
+
+<h2>Server-Statistik</h2>
+<?php if($this->entity->getValueByKey("stats") == ""): ?>
+    <p>keine Server-Statistik vorhanden</p>
+<?php else: ?>
+    <table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Typ</th>
+            <th>Anzahl</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php $stats = $this->entity->getValueByKey("stats"); ?>
+        <?php foreach($stats as $key => $value): ?>        
+            <tr>
+                <td><?php echo $key; ?></td>
+                <td><?php echo $value; ?></td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+<?php endif; ?>
+
+<h2>Plugins</h2>
+<?php if ($this->entity->getValueByKey("plugins") == ""): ?>
+    <p>keine Plugin-Liste vorhanden</p>
+<?php else: ?>
+    <?php $pluginlist = $this->entity->getValueByKey("plugins"); ?>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($pluginlist as $id => $plugin): ?>
+                <tr>
+                    <td><a href="<?php echo \LwPortalList\Services\Page::getUrl(array("cmd" => "showModuleDetail", "id" => $plugin["id"])); ?>"><?php echo $plugin["name"]; ?></a></td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php endif; ?>
+
+<h2>Packages</h2>
+<?php if ($this->entity->getValueByKey("packages") == ""): ?>
+    <p>keine Package-Liste vorhanden</p>
+<?php else: ?>
+    <?php $packages = $this->entity->getValueByKey("packages"); ?>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($packages as $id => $package): ?>
+                <tr>
+                    <td><a href="<?php echo \LwPortalList\Services\Page::getUrl(array("cmd" => "showModuleDetail", "id" => $package["id"])); ?>"><?php echo $package["name"]; ?></a></td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php endif; ?>

@@ -1,0 +1,34 @@
+<?php if($this->isAdmin): ?>
+    <a href="<?php echo \LwPortalList\Services\Page::getUrl(array("cmd" => "showAddForm")); ?>">neues Protal</a> &nbsp;&nbsp;
+    <a href="<?php echo \LwPortalList\Services\Page::getUrl(array("cmd" => "getSystemInfoFromPortalCollection")); ?>">alle Systeminformationen aktualisieren</a>&nbsp;&nbsp;
+    <a href="<?php echo \LwPortalList\Services\Page::getUrl(array("cmd" => "showMd5CheckForm")); ?>">md5 Check</a>
+<?php endif; ?>
+    
+<h1>Portale</h1>
+
+<?php if (count($this->collection) > 0): ?>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>&nbsp;</th>
+                <?php if($this->isAdmin): ?>
+                    <th style="width: 50px;">&nbsp;</th>
+                    <th style="width: 50px;">&nbsp;</th>
+                <?php endif; ?>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($this->collection as $portal): ?>
+                <tr>
+                    <td><a href="<?php echo \LwPortalList\Services\Page::getUrl(array("cmd" => "showDetail", "id" => $portal->getId())); ?>"><?php echo $portal->getValueByKey("name"); ?></a></td>
+                    <?php if($this->isAdmin): ?>
+                        <td><a href="<?php echo \LwPortalList\Services\Page::getUrl(array("cmd" => "showEditForm", "id" => $portal->getId())); ?>">edit</a></td>
+                        <td><a href="<?php echo \LwPortalList\Services\Page::getUrl(array("cmd" => "deleteEntry", "id" => $portal->getId())); ?>" onclick="if(confirm(unescape('Diesen Eintrag wirklich l%F6schen ?'))){ return true;} return false;">delete</a></td>
+                    <?php endif; ?>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php else: ?>
+    <p>keine Portale vorhanden</p>
+<?php endif; ?>

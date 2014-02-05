@@ -1,0 +1,24 @@
+<a href="<?php echo \LwPortalList\Services\Page::getUrl(array("cmd" => "showList")); ?>">zur&uuml;ck</a> &nbsp;&nbsp;
+
+<h1><?php echo $this->entity->getValueByKey("modulename"); ?></h1>
+
+<?php $portals = $this->entity->getValueByKey("portals"); ?>
+
+<?php if (count($portals) > 0): ?>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>in folgenden Portalen vorhanden</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($portals as $portal): ?>
+                <tr>
+                    <td><a href="<?php echo \LwPortalList\Services\Page::getUrl(array("cmd" => "showDetail", "id" => $portal["id"])); ?>"><?php echo $portal["name"]; ?></a></td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php else: ?>
+    <p> Dieses Modul ist aktuell in keinem Portal installiert.</p>
+<?php endif; ?>
