@@ -1,8 +1,9 @@
 <?php if($this->isAdmin): ?>
     <a href="<?php echo \LwPortalList\Services\Page::getUrl(array("cmd" => "showAddForm")); ?>">neues Protal</a> &nbsp;&nbsp;
     <a href="<?php echo \LwPortalList\Services\Page::getUrl(array("cmd" => "getSystemInfoFromPortalCollection")); ?>">alle Systeminformationen aktualisieren</a>&nbsp;&nbsp;
-    <a href="<?php echo \LwPortalList\Services\Page::getUrl(array("cmd" => "showMd5CheckForm")); ?>">md5 Check</a>
+    <a href="<?php echo \LwPortalList\Services\Page::getUrl(array("cmd" => "showMd5CheckForm")); ?>">md5 Check</a>&nbsp;&nbsp;
 <?php endif; ?>
+<a href="<?php echo \LwPortalList\Services\Page::getUrl(array("cmd" => "showModulesList")); ?>">Modules Liste</a>
     
 <h1>Portale</h1>
 
