@@ -1,7 +1,37 @@
+<link rel="stylesheet" href="<?php echo $this->mediaUrl; ?>jquery/ui/css/smoothness/jquery-ui-1.8.7.custom.css" />
+<link href="<?php echo $this->mediaUrl; ?>jquery/datatables/media/css/demo_page.css" rel="stylesheet" type="text/css"/>
+<link href="<?php echo $this->mediaUrl; ?>jquery/datatables/media/css/demo_table_jui.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="<?php echo $this->mediaUrl; ?>jquery/datatables/media/js/jquery.dataTables.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#pluginlist').dataTable({
+            "bJQueryUI": true,
+            "sPaginationType": "full_numbers",
+            "aoColumns": [null, null],
+            "bStateSave": true
+        });
+        $('#packagelist').dataTable({
+            "bJQueryUI": true,
+            "sPaginationType": "full_numbers",
+            "aoColumns": [null, null],
+            "bStateSave": true
+        });
+        $('#statslist').dataTable({
+            "bJQueryUI": true,
+            "sPaginationType": "full_numbers",
+            "aoColumns": [null, null],
+            "bStateSave": true
+        });
+    });
+
+</script>
+
 <a href="<?php echo \LwPortalList\Services\Page::getUrl(array("cmd" => "showList")); ?>">zur&uuml;ck</a> &nbsp;&nbsp;
 <?php if ($this->isAdmin): ?>
     <a href="<?php echo \LwPortalList\Services\Page::getUrl(array("cmd" => "showMd5CheckForm", "id" => $this->entity->getId())); ?>">Md5 Check</a> &nbsp;&nbsp;
-    <a href="<?php echo \LwPortalList\Services\Page::getUrl(array("cmd" => "getSystemInfoFromPortal", "id" => $this->entity->getId())); ?>">Systeminformationen aktualisieren</a>
+    <a href="<?php echo \LwPortalList\Services\Page::getUrl(array("cmd" => "getSystemInfoFromPortal", "id" => $this->entity->getId())); ?>">Systeminformationen aktualisieren</a> &nbsp;&nbsp;
+    <a href="<?php echo \LwPortalList\Services\Page::getUrl(array("cmd" => "showEditForm", "id" => $this->entity->getId())); ?>">Portal bearbeiten</a>
 <?php endif; ?>
 
 <h1><?php echo $this->entity->getValueByKey("name"); ?></h1>
@@ -40,6 +70,14 @@
                 <?php endif; ?>
             </td>
         </tr>
+        <tr>
+            <td>Plugins</td>
+            <td><?php if($this->entity->getValueByKey("plugins") == ""){ echo "0"; } else { $pluginlist = $this->entity->getValueByKey("plugins"); echo count($pluginlist); } ?></td>
+        </tr>
+        <tr>
+            <td>Packages</td>
+            <td><?php if($this->entity->getValueByKey("packages") == ""){ echo "0"; } else { $packagelist = $this->entity->getValueByKey("packages"); echo count($packagelist); } ?></td>
+        </tr>
     </tbody>
 </table>
 
@@ -52,10 +90,10 @@
 <?php if($this->entity->getValueByKey("stats") == ""): ?>
     <p>keine Server-Statistik vorhanden</p>
 <?php else: ?>
-    <table class="table table-striped">
+    <table id="statslist" class="table table-striped">
     <thead>
         <tr>
-            <th>Typ</th>
+            <th>Tabellenname</th>
             <th>Anzahl</th>
         </tr>
     </thead>
@@ -76,16 +114,18 @@
     <p>keine Plugin-Liste vorhanden</p>
 <?php else: ?>
     <?php $pluginlist = $this->entity->getValueByKey("plugins"); ?>
-    <table class="table table-striped">
+    <table id="pluginlist" class="table table-striped">
         <thead>
             <tr>
-                <th>&nbsp;</th>
+                <th>Name</th>
+                <th>Anzahl gefundener Installationen</th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($pluginlist as $id => $plugin): ?>
                 <tr>
                     <td><a href="<?php echo \LwPortalList\Services\Page::getUrl(array("cmd" => "showModuleDetail", "id" => $plugin["id"])); ?>"><?php echo $plugin["name"]; ?></a></td>
+                    <td><?php echo $plugin["installs"]; ?></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
@@ -97,16 +137,18 @@
     <p>keine Package-Liste vorhanden</p>
 <?php else: ?>
     <?php $packages = $this->entity->getValueByKey("packages"); ?>
-    <table class="table table-striped">
+    <table id="packagelist" class="table table-striped">
         <thead>
             <tr>
-                <th>&nbsp;</th>
+                <th>Name</th>
+                <th>Anzahl gefundener Installationen</th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($packages as $id => $package): ?>
                 <tr>
                     <td><a href="<?php echo \LwPortalList\Services\Page::getUrl(array("cmd" => "showModuleDetail", "id" => $package["id"])); ?>"><?php echo $package["name"]; ?></a></td>
+                    <td><?php echo $package["installs"]; ?></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>

@@ -25,30 +25,30 @@ class checkMd5
 
     public function resolve()
     {
+        $result = array();
         $fileDataArray = $this->request->getFileData("inputFile");
-        
+
         if (!empty($fileDataArray["name"])) {
             $csv = file_get_contents($fileDataArray["tmp_name"]);
         } else {
             $csv = $this->request->getRaw("configPath") . "," . $this->request->getRaw("path") . "," . $this->request->getRaw("expectedMd5") . ";";
             $this->respone->setDataByKey("postArray", array("configPath" => str_replace("CONFIG:path_", "", $this->request->getRaw("configPath")), "path" => $this->request->getRaw("path"), "expectedMd5" => $this->request->getRaw("expectedMd5")));
         }
-        
-        $collector = new \LwPortalList\Collector\InfoCollector(false); # Beim Md5 Abholen wird keine DB-Anbindung benoetigt
+
+        $files = $this->prepareFileArray($csv);
 
         if ($this->request->getInt("id") && $this->request->getInt("id") > 0) {
             $response = \LwPortalList\Model\Portal\CommandResolver\getPortalEntityById::getInstance(array("id" => $this->request->getInt("id")))->resolve();
             $entity = $response->getDataByKey("PortalEntity");
-            $collector->setEntity($entity);
+            $result[$entity->getValueByKey("name")] = $this->compareFiles($entity, $files);
         } else {
             $response = \LwPortalList\Model\Portal\CommandResolver\getPortalsCollection::getInstance()->resolve();
             $collection = $response->getDataByKey("PortalEntitiesCollection");
-            $collector->setCollection($collection);
-        }
-
-        $files = $this->prepareFileArray($csv);
-        $result = $collector->executeMd5($files);
-        
+            foreach ($collection as $entity) {
+                $result[$entity->getValueByKey("name")] = $this->compareFiles($entity, $files);
+            }
+        } 
+     
         $this->respone->setDataByKey("Md5Results", $result);
         return $this->respone;
     }
@@ -76,6 +76,26 @@ class checkMd5
                 );
             }
         }
+        return $array;
+    }
+
+    protected function compareFiles($entity, $files)
+    {
+        $array = array();
+
+        if (substr($entity->getValueByKey("url"), -1) == "/") {
+            $url = $entity->getValueByKey("url");
+        } else {
+            $url = $entity->getValueByKey("url") . "/";
+        }
+        foreach ($files as $file) {            
+            $json = file_get_contents($url . "index.php?getSystemInfo=1&cmd=Md5&configPath=" . $file["configPath"] . "&filePath=" . urlencode($file["path"]) . "&expectedMd5=" . $file["expectedMd5"]);
+            $result = json_decode($json, true);
+            if (is_array($result)) {
+                $array[] = $result;
+            }
+        }
+
         return $array;
     }
 

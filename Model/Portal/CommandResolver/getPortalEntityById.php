@@ -44,12 +44,13 @@ class getPortalEntityById
     {
         $array = array();
         $modules = $this->QH->loadPortalModules($this->params["id"]);
+        $installationCount = $this->QH->getAmountOfPortalsWhereAModuleIsInstalled();
 
         foreach($modules as $module){
             if($module["type"] == "plugin"){
-                $array["plugins"][] = array("id" => $module["id"], "name" => $module["name"]);
+                $array["plugins"][] = array("id" => $module["id"], "name" => $module["name"], "installs" => $installationCount[$module["name"]]);
             }elseif($module["type"] == "package"){
-                $array["packages"][] = array("id" => $module["id"], "name" => $module["name"]);
+                $array["packages"][] = array("id" => $module["id"], "name" => $module["name"], "installs" => $installationCount[$module["name"]]);
             }
         }
         foreach ($array["plugins"] as $nr => $plugin){
@@ -108,6 +109,10 @@ class getPortalEntityById
             unset($result["portal_id"]);
             unset($result["date"]);
             
+            foreach ($result as $key => $value){
+                $arr[] = $key;
+            }
+            array_multisort($arr, SORT_ASC, $result);            
             $array = $result;            
         }
         return $array;

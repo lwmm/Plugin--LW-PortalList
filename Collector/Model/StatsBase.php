@@ -2,28 +2,16 @@
 
 namespace LwPortalList\Collector\Model;
 
-class AddStats
+class StatsBase
 {
-
-    protected $db;
-
-    public function __construct()
-    {
-        $this->db = \lw_registry::getInstance()->getEntry("db");
-    }
-
-    public function execute($id, $stats)
-    {
-        return $this->addStats($id, $stats);
-    }
 
     protected function addStats($id, $stats)
     {
         $entryId = $this->isTodaysStatsScanExisting($id);
-        
+
         if (!$entryId) {
             return $this->addStatsScan($id, $stats);
-        }else{
+        } else {
             return $this->updateTodayStatsScan($id, $stats, $entryId);
         }
     }
@@ -33,7 +21,7 @@ class AddStats
         $this->db->setStatement("SELECT * FROM t:lw_info_portals_stats WHERE portal_id = :portal_id AND date = :date ");
         $this->db->bindParameter("portal_id", "i", $id);
         $this->db->bindParameter("date", "i", date("Ymd"));
-        
+
         $result = $this->db->pselect1();
 
         if (!empty($result)) {
@@ -85,7 +73,7 @@ class AddStats
         }
 
         $updateString = substr($updateString, 0, strlen($updateString) - 1);
-        
+
         $this->db->setStatement("UPDATE t:lw_info_portals_stats SET " . $updateString . " WHERE portal_id = :portal_id AND id = :entryId ");
         $this->db->bindParameter("portal_id", "i", $id);
         $this->db->bindParameter("entryId", "i", $entryId);

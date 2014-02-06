@@ -27,6 +27,7 @@ class getModuleCollection
         $collection = array();
         
         $QH = new \LwPortalList\Model\Module\DataHandler\QueryHandler();
+        $installationCount = $QH->getAmountOfPortalsWhereAModuleIsInstalled();
         $result = $QH->loadAllModules();
         
         foreach($result as $module){
@@ -35,7 +36,7 @@ class getModuleCollection
             }elseif($module["type"] == "package"){
                 $type = "packages";
             }
-            
+            $module["installs"] = $installationCount[$module["name"]];
             $entity = new \LwPortalList\Model\Module\Object\Module($module["id"]);
             $entity->setValues($module);
             $collection[$type][] = $entity;

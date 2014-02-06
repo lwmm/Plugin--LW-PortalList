@@ -19,6 +19,8 @@ class ModuleDetail
 
     public function render()
     {
+        $config = \lw_registry::getInstance()->getEntry("config");
+        $this->view->mediaUrl = $config["url"]["media"];
         return $this->view->render();
     }
 

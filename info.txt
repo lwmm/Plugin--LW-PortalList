@@ -1,0 +1,18 @@
+Kurzbeschreibung Schnittstelle "Collector"
+
+- Soll nur für ein Portal die gesamten Systeminformationen erneuert werden, dann wird nur eine einzelne Entity uebergeben
+    -> setEntity()
+- Sollen die Systeminformationen fuer alle Portale oder eine gezielte Liste von Portalen erneuert werden, dann wird eine Collection von Entities ubergeben
+    -> setCollection()    ( ein Array von Entities )
+
+- Der Collector fuehrt alle unter "Module" angelegten Modules, zum einsammeln von Informationen, aus ( Iteration ueber die Dateien im Verzeichnis )
+- Der Name des Modules wird als Parameter ( cmd ) an das LwSystemInfo Package uebergeben
+    -> Anhand dieses Namens wird das Angesprochene Portal das passende Module aus dem LwSystemInfo Package laden und ausfuehren
+    -> Es koennen beliebige Parameter zusaetzlich uebergeben werden, via GET-Parametern
+        --> Dem entsprechendem Module im LwSystemInfo Package wird im Konstruktor das GET-Array uebergeben
+
+- Das vom Portal erhaltene Json-Array wird decodiert
+- Anhand des aktuellen Module-Namens ( foreach ueber die gefundenen Dateien im Module Verzeichnis ) wird das Collector-Module instanziert 
+- Im Module Konstruktor wird das Datenbank Objekt uebergeben
+- Im Module wird die execute Funktion ausgefuehrt
+    ->  die execute Funktion hat folgende Uebergabeparameter  id = Entity-Id, array = jsonDecodedArray

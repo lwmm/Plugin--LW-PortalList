@@ -2,41 +2,9 @@
 
 namespace LwPortalList\Collector\Model;
 
-class AddModules
+class ModulesBase
 {
-    protected $db;
     
-    public function __construct()
-    {
-        $this->db = \lw_registry::getInstance()->getEntry("db");
-    }
-    
-    public function execute($id, $systemInfo)
-    {
-        return $this->addSystemInfoForEntityById($id, $systemInfo);
-    }
-
-    protected function addSystemInfoForEntityById($id, $systemInfo)
-    {
-        $this->deletePortalModuleConnections($id);
-
-        foreach ($systemInfo["packages"] as $package) {
-            if (!$this->isModuleExisting($package["packagename"], "package")) {
-                $this->addModule($package["packagename"], "package");
-            }
-            $this->addPortalModuleConnection($id, $this->getModuleIdByName($package["packagename"]));
-        }
-
-        foreach ($systemInfo["plugins"] as $plugingroup) {
-            foreach ($plugingroup as $plugin) {
-                if (!$this->isModuleExisting($plugin["pluginname"], "plugin")) {
-                    $this->addModule($plugin["pluginname"], "plugin");
-                }
-                $this->addPortalModuleConnection($id, $this->getModuleIdByName($plugin["pluginname"]));
-            }
-        }
-    }
-
     protected function isModuleExisting($module, $type)
     {
         $this->db->setStatement("SELECT * FROM t:lw_info_modules WHERE name = :name AND type = :type ");
@@ -77,11 +45,21 @@ class AddModules
         return $this->db->pdbquery();
     }
 
-    protected function deletePortalModuleConnections($portalId)
+    protected function deletePortalModuleConnections($portalId, $type)
     {
-        $this->db->setStatement("DELETE FROM t:lw_info_portals_modules WHERE pid = :pid ");
+        $this->db->setStatement("SELECT id FROM t:lw_info_modules WHERE type = :type ");
+        $this->db->bindParameter("type", "s", $type);
+        $result = $this->db->pselect();
+        
+        $str = "";
+        foreach($result as $module){
+            $str.= " mid = " . $module["id"] . " OR";
+        }
+        
+        $str = substr($str, 0, strlen($str) - 2);                
+        $this->db->setStatement("DELETE FROM t:lw_info_portals_modules WHERE pid = :pid AND ( " . $str . "  ) ");
         $this->db->bindParameter("pid", "i", $portalId);
-
+        
         return $this->db->pdbquery();
     }
 

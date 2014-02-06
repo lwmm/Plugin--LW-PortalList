@@ -26,6 +26,7 @@ class PortalDetail
     {
         $config = \lw_registry::getInstance()->getEntry("config");
         
+        $this->view->mediaUrl = $config["url"]["media"];
         $this->view->piwikVisitChart = $config['piwik']['base'].
                         "&method=ImageGraph.get".
                         "&graphType=evolution".

@@ -29,6 +29,9 @@ class getPortalsCollection
         $result = $QH->loadAllPortals();   
         
         foreach($result as $portal){
+            $modulesAmount = $QH->getAmountOfInstalledPluginsAndPackagesByPortalId($portal["id"]);
+            $portal["plugins"] = $modulesAmount["plugins"];
+            $portal["packages"] = $modulesAmount["packages"];
             $entity = new \LwPortalList\Model\Portal\Object\Portal($portal["id"]);
             $entity->setValues($portal);
             $collection[] = $entity;
