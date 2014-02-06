@@ -36,7 +36,7 @@ class QueryHandler
     
     public function getAmountOfPortalsWhereAModuleIsInstalled()
     {
-        $this->db->setStatement("SELECT m.name, COUNT(pm.pid) as portals  FROM t:lw_info_portals_modules pm, t:lw_info_modules m WHERE pm.mid = m.id  GROUP BY pm.mid ");
+        $this->db->setStatement("SELECT pm.mid, m.name, COUNT(pm.pid) as portals FROM t:lw_info_portals_modules pm, t:lw_info_modules m WHERE pm.mid = m.id  GROUP BY pm.mid, m.name ");
         $result = $this->db->pselect();
         
         $array = array();

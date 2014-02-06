@@ -87,7 +87,7 @@
 <?php endif; ?>
 
 <h2>Server-Statistik</h2>
-<?php if($this->entity->getValueByKey("stats") == ""): ?>
+<?php if(!$this->entity->getValueByKey("stats")): ?>
     <p>keine Server-Statistik vorhanden</p>
 <?php else: ?>
     <table id="statslist" class="table table-striped">

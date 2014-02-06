@@ -12,6 +12,7 @@ class lw_portal_list extends lw_plugin
 
     public function buildPageOutput()
     {
+        $this->response->useJQuery();
         if (isset($this->params["admin"]) && $this->params["admin"] == 1) {
             $admin = true;
         } else {
