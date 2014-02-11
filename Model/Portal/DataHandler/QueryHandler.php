@@ -76,7 +76,7 @@ class QueryHandler
 
     public function loadAcutalPortalStats($id)
     {
-        $this->db->setStatement("SELECT * FROM t:lw_info_portals_stats WHERE portal_id = :id ORDER BY date DESC ");
+        $this->db->setStatement("SELECT * FROM t:lw_info_portals_stats WHERE portal_id = :id ORDER BY lw_date DESC ");
         $this->db->bindParameter("id", "i", $id);
 
         return $this->db->pselect(0, 1);

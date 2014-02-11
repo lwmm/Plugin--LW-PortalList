@@ -18,7 +18,7 @@ class StatsBase
 
     protected function isTodaysStatsScanExisting($id)
     {
-        $this->db->setStatement("SELECT * FROM t:lw_info_portals_stats WHERE portal_id = :portal_id AND date = :date ");
+        $this->db->setStatement("SELECT * FROM t:lw_info_portals_stats WHERE portal_id = :portal_id AND lw_date = :date ");
         $this->db->bindParameter("portal_id", "i", $id);
         $this->db->bindParameter("date", "i", date("Ymd"));
 
@@ -48,7 +48,7 @@ class StatsBase
         $columns_str = substr($columns_str, 0, strlen($columns_str) - 1);
         $placeholders_str = substr($placeholders_str, 0, strlen($placeholders_str) - 1);
 
-        $this->db->setStatement("INSERT INTO t:lw_info_portals_stats ( portal_id, " . $columns_str . ", date ) VALUES ( :portal_id, " . $placeholders_str . ", :date ) ");
+        $this->db->setStatement("INSERT INTO t:lw_info_portals_stats ( portal_id, " . $columns_str . ", lw_date ) VALUES ( :portal_id, " . $placeholders_str . ", :date ) ");
         $this->db->bindParameter("portal_id", "i", $id);
         foreach ($stats as $column => $value) {
             $this->db->bindParameter($uniquePlaceholerArray[$column], "i", $value);

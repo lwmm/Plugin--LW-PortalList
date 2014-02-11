@@ -107,7 +107,7 @@ class getPortalEntityById
         if(!empty($result)){
             unset($result["id"]);
             unset($result["portal_id"]);
-            unset($result["date"]);
+            unset($result["lw_date"]);
             
             foreach ($result as $key => $value){
                 $arr[] = $key;
