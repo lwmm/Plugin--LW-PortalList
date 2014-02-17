@@ -21,7 +21,11 @@ class lw_portal_list extends lw_plugin
 
         $controller = new \LwPortalList\Controller\Frontend();
         $controller->setAdmin($admin);
-        return $controller->execute();
+
+        $view = new \LwPortalList\Views\SbAdminFrame();
+        $view->setContent($controller->execute());
+        $view->setIsAdmin($admin);
+        return $view->render();
     }
 
     public function getOutput()
