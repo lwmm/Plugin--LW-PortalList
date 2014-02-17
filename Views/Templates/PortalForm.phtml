@@ -1,4 +1,8 @@
-<a href="<?php echo \LwPortalList\Services\Page::getUrl(array("cmd" => "showList")); ?>">zur&uuml;ck</a>
+<?php if ($this->formtype == "edit"): ?>
+    <a href="<?php echo \LwPortalList\Services\Page::getUrl(array("cmd" => "showDetail", "id" => $this->entity->getId())); ?>">zur&uuml;ck</a>
+<?php else: ?>
+    <a href="<?php echo \LwPortalList\Services\Page::getUrl(array("cmd" => "showList")); ?>">zur&uuml;ck</a>
+<?php endif; ?>
 
 <?php if ($this->formtype == "edit"): ?>
     <h1>Portal "<?php echo $this->entity->getValueByKey("name"); ?>" bearbeiten</h1>
