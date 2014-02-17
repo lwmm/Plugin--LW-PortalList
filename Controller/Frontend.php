@@ -144,7 +144,7 @@ class Frontend
     {
         if ($this->isAdmin()) {
             $db = \lw_registry::getInstance()->getEntry("db");
-            $response = \LwPortalList\Model\Portal\CommandResolver\getPortalsCollection::getInstance()->resolve();
+            $response = \LwPortalList\Model\Portal\CommandResolver\getPortalsCollectionForCollectingSystemInfo::getInstance()->resolve();
             $collection = $response->getDataByKey("PortalEntitiesCollection");
 
             $collector = new \LwPortalList\Collector\InfoCollector($db);

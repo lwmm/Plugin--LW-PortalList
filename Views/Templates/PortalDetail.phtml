@@ -78,6 +78,12 @@
             <td>Packages</td>
             <td><?php if($this->entity->getValueByKey("packages") == ""){ echo "0"; } else { $packagelist = $this->entity->getValueByKey("packages"); echo count($packagelist); } ?></td>
         </tr>
+        <?php if($this->entity->getValueByKey("scan_exclude") == 1): ?>
+            <tr>
+                <td>&nbsp;</td>
+                <td><?php if($this->entity->getValueByKey("scan_exclude") == 1){ echo "Dieses Portal ist von dem SystemInfo-Scan, aller Portale, ausgeschlossen"; } ?></td>
+            </tr>
+        <?php endif; ?>
     </tbody>
 </table>
 

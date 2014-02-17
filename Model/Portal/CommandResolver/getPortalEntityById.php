@@ -26,7 +26,7 @@ class getPortalEntityById
     {
         $this->QH = new \LwPortalList\Model\Portal\DataHandler\QueryHandler();
         $result = $this->QH->loadPortalById($this->params["id"]);
-
+        
         $modules = $this->prepareModules();
         $result["plugins"] = $modules["plugins"];
         $result["packages"] = $modules["packages"];

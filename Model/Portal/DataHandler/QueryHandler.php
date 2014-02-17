@@ -17,6 +17,12 @@ class QueryHandler
         $this->db->setStatement("SELECT * FROM t:lw_info_portals ORDER BY name ");
         return $this->db->pselect();
     }
+    
+    public function loadAllPortalsWhereScanIsAllowed()
+    {
+        $this->db->setStatement("SELECT * FROM t:lw_info_portals WHERE scan_exclude = 0 ORDER BY name ");
+        return $this->db->pselect();
+    }
 
     public function loadPortalById($id)
     {

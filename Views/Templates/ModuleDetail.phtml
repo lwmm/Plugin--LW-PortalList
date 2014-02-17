@@ -11,11 +11,14 @@
             "aoColumns": [null],
             "bStateSave": true
         });
+        function backtopage() {
+            window.history.back();
+        }
     });
 
 </script>
 
-<a href="<?php echo \LwPortalList\Services\Page::getUrl(array("cmd" => "showList")); ?>">zur&uuml;ck</a> &nbsp;&nbsp;
+<a onclick="window.history.back();" style="cursor:pointer;">zur&uuml;ck</a> &nbsp;&nbsp;
 
 <h1><?php echo $this->entity->getValueByKey("modulename"); ?></h1>
 

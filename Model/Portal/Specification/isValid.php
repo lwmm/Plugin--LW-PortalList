@@ -6,6 +6,7 @@ define("REQUIRED", "1");    # array( 1 => array( "error" => 1, "options" => "" )
 define("MAXLENGTH", "2");   # array( 2 => array( "error" => 1, "options" => array( "maxlength" => $maxlength, "actuallength" => $strlen ) ));
 define("DIGITFIELD", "3");  # array( 6 => array( "error" => 1, "options" => "" ));
 define("SYNTAXURL", "4");
+define("BOOL", "5");
 
 class isValid extends \LwPortalList\Model\Base\Specification\isValidBase
 {
@@ -20,7 +21,8 @@ class isValid extends \LwPortalList\Model\Base\Specification\isValidBase
             "server",
             "path",
             "url",
-            "piwik_id"
+            "piwik_id",
+            "scan_exclude"
         );
     }
     
@@ -71,6 +73,22 @@ class isValid extends \LwPortalList\Model\Base\Specification\isValidBase
             $ok = false;
         }
 
+        return $ok;
+    }
+    
+    protected function scan_excludeValidate($key, $object)
+    {
+        $ok = true;
+        
+        if ($object->getValueByKey($key) != "" && !ctype_digit($object->getValueByKey($key))) {
+            $this->addError($key, DIGITFIELD);
+            $ok = false;
+        }
+        if ($object->getValueByKey($key) != "" && $object->getValueByKey($key) > 1) {
+            $this->addError($key, BOOL);
+            $ok = false;
+        }
+        
         return $ok;
     }
 
