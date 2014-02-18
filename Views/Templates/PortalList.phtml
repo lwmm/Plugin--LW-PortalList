@@ -8,7 +8,11 @@
         $('#portallist').dataTable({
             "bJQueryUI": true,
             "sPaginationType": "full_numbers",
-            "aoColumns": [null, null, null, {"bSortable": false}, {"bSortable": false}],
+            <?php if($this->isAdmin): ?>
+                "aoColumns": [null, null, null, {"bSortable": false}, {"bSortable": false}],
+            <?php else: ?>
+                "aoColumns": [null, null, null],
+            <?php endif; ?>
             "bStateSave": true
         });
     });
