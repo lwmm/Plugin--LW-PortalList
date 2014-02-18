@@ -27,7 +27,7 @@
 
 </script>
 
-<a href="<?php echo \LwPortalList\Services\Page::getUrl(array("cmd" => "showList")); ?>">zur&uuml;ck</a> &nbsp;&nbsp;
+<a onclick="window.history.back();" style="cursor:pointer;">zur&uuml;ck</a>
 <?php if ($this->isAdmin): ?>
     <a href="<?php echo \LwPortalList\Services\Page::getUrl(array("cmd" => "showMd5CheckForm", "id" => $this->entity->getId())); ?>">Md5 Check</a> &nbsp;&nbsp;
     <a href="<?php echo \LwPortalList\Services\Page::getUrl(array("cmd" => "getSystemInfoFromPortal", "id" => $this->entity->getId())); ?>">Systeminformationen aktualisieren</a> &nbsp;&nbsp;
